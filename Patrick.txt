@@ -1,0 +1,266 @@
+Network Configurations:
+======================
+Zentech_Rwanda Router
+---------------------
+Router>enable
+Router#configure terminal
+Router(config)#hostname Zentech_Rwanda
+
+Zentech_Rwanda(config)#interface Serial0/3/0
+Zentech_Rwanda(config-if)#ip address 41.120.61.5 255.255.255.252
+Zentech_Rwanda(config-if)#no shutdown
+Zentech_Rwanda(config-if)#exit
+
+Zentech_Rwanda(config)#interface GigabitEthernet0/1
+Zentech_Rwanda(config-if)#ip address 10.10.2.37 255.255.255.252
+Zentech_Rwanda(config-if)#no shutdown
+
+Zentech_Rwanda(config)#interface GigabitEthernet0/0
+Zentech_Rwanda(config-if)#int gig0/0.10
+Zentech_Rwanda(config-subif)#encapsulation dot1Q 10
+Zentech_Rwanda(config-subif)#ip add 10.10.0.1 255.255.255.0
+Zentech_Rwanda(config-subif)#ip helper-address 10.10.2.38
+Zentech_Rwanda(config-subif)#exit
+
+Zentech_Rwanda(config-if)#int gig0/0.20
+Zentech_Rwanda(config-subif)#encapsulation dot1Q 20
+Zentech_Rwanda(config-subif)#ip add 10.10.1.1 255.255.255.128
+Zentech_Rwanda(config-subif)#ip helper-address 10.10.2.38
+Zentech_Rwanda(config-subif)#exit
+
+Zentech_Rwanda(config-if)#int gig0/0.30
+Zentech_Rwanda(config-subif)#encapsulation dot1Q 30
+Zentech_Rwanda(config-subif)#ip add 10.10.1.129 255.255.255.192
+Zentech_Rwanda(config-subif)#ip helper-address 10.10.2.38
+Zentech_Rwanda(config-subif)#exit
+
+Zentech_Rwanda(config-if)#int gig0/0.40
+Zentech_Rwanda(config-subif)#encapsulation dot1Q 40
+Zentech_Rwanda(config-subif)#ip add 10.10.1.193 255.255.255.192
+Zentech_Rwanda(config-subif)#ip helper-address 10.10.2.38
+Zentech_Rwanda(config-subif)#exit
+
+Zentech_Rwanda(config-if)#int gig0/0.50
+Zentech_Rwanda(config-subif)#encapsulation dot1Q 50
+Zentech_Rwanda(config-subif)#ip add 10.10.2.1 255.255.255.224
+Zentech_Rwanda(config-subif)#ip helper-address 10.10.2.38
+Zentech_Rwanda(config-subif)#exit
+Zentech_Rwanda(config-if)#no shutdown
+Zentech_Rwanda(config-if)#exit
+
+Zentech_Rwanda(config)#router rip
+Zentech_Rwanda(config-router)#network 10.0.0.0
+Zentech_Rwanda(config-router)#network 41.0.0.0
+Zentech_Rwanda(config-router)#exit
+
+Zentech_Rwanda(config)# ip access-list standard INSIDE_ACL
+Zentech_Rwanda(config-std-nacl)# permit 10.10.0.0 0.0.15.255
+Zentech_Rwanda(config-std-nacl)# exit
+
+Zentech_Rwanda(config)# ip nat pool PUBLIC_POOL 41.120.61.20 41.120.61.24 netmask 255.255.255.0
+Zentech_Rwanda(config)# ip nat inside source list INSIDE_ACL pool PUBLIC_POOL overload
+
+Zentech_Rwanda(config)# interface S0/3/0
+Zentech_Rwanda(config-if)# ip nat outside
+
+Zentech_Rwanda(config)#int g0/0.10
+Zentech_Rwanda(config-subif)#ip nat inside
+Zentech_Rwanda(config-subif)#int g0/0.20
+Zentech_Rwanda(config-subif)#ip nat inside
+Zentech_Rwanda(config-subif)#int g0/0.30
+Zentech_Rwanda(config-subif)#ip nat inside
+Zentech_Rwanda(config-subif)#int g0/0.40
+Zentech_Rwanda(config-subif)#ip nat inside
+Zentech_Rwanda(config-subif)#int g0/0.50
+Zentech_Rwanda(config-subif)#ip nat inside
+Zentech_Rwanda(config-subif)#exit
+Zentech_Rwanda(config)#
+Zentech_Rwanda(config)#
+Zentech_Rwanda(config)#exit
+
+Zentech_Rwanda(config)# ip route 0.0.0.0 0.0.0.0 s0/3/0
+
+
+Liquid_Rwanda_ISP Router
+------------------------
+Router>enable
+Router#configure terminal
+Router(config)#hostname Liquid_Rwanda_ISP
+
+Liquid_Rwanda_ISP(config)#interface GigabitEthernet0/0
+Liquid_Rwanda_ISP(config-if)#ip address 31.65.123.89 255.255.255.0
+Liquid_Rwanda_ISP(config-if)#no shutdown
+Liquid_Rwanda_ISP(config-if)#exit
+
+Liquid_Rwanda_ISP(config)#interface Serial0/3/0
+Liquid_Rwanda_ISP(config-if)#ip address 41.120.61.6 255.255.255.252
+Liquid_Rwanda_ISP(config-if)#no shutdown
+Liquid_Rwanda_ISP(config-if)#exit
+
+Liquid_Rwanda_ISP(config)#router rip
+Liquid_Rwanda_ISP(config-router)#network 41.0.0.0
+Liquid_Rwanda_ISP(config-router)#network 31.0.0.0
+
+Liquid_Rwanda_ISP(config)# ip route 0.0.0.0 0.0.0.0 s0/3/0
+
+
+DISTRIB_SW_LOC SWITCH
+---------------------
+Switch>enable
+Switch#configure terminal
+Switch(config)#hostname DISTRIB_SW_LOC
+
+DISTRIB_SW_LOC(config)#interface FastEthernet0/1
+DISTRIB_SW_LOC(config-if)#switchport mode trunk
+DISTRIB_SW_LOC(config-if)#exit
+
+DISTRIB_SW_LOC(config)#interface FastEthernet0/2
+DISTRIB_SW_LOC(config-if)#switchport mode trunk
+DISTRIB_SW_LOC(config-if)#exit
+
+DISTRIB_SW_LOC(config)#interface FastEthernet0/4
+DISTRIB_SW_LOC(config-if)#switchport mode trunk
+DISTRIB_SW_LOC(config-if)#exit
+
+DISTRIB_SW_LOC(config)#interface FastEthernet0/5
+DISTRIB_SW_LOC(config-if)#switchport mode trunk
+DISTRIB_SW_LOC(config-if)#exit
+
+DISTRIB_SW_LOC(config)#interface FastEthernet0/6
+DISTRIB_SW_LOC(config-if)#switchport mode trunk
+DISTRIB_SW_LOC(config-if)#exit
+
+DISTRIB_SW_LOC(config)#interface FastEthernet0/7
+DISTRIB_SW_LOC(config-if)#switchport mode trunk
+DISTRIB_SW_LOC(config-if)#exit
+
+DISTRIB_SW_LOC(config)#vlan 10
+DISTRIB_SW_LOC(config-vlan)# name Executive
+DISTRIB_SW_LOC(config-vlan)#vlan 20
+DISTRIB_SW_LOC(config-vlan)# name Design
+DISTRIB_SW_LOC(config-vlan)#vlan 30
+DISTRIB_SW_LOC(config-vlan)# name Operations
+DISTRIB_SW_LOC(config-vlan)#vlan 40
+DISTRIB_SW_LOC(config-vlan)# name Engineering
+DISTRIB_SW_LOC(config-vlan)#vlan 50
+DISTRIB_SW_LOC(config-vlan)# name HR&COM
+
+EX_ASW(EXECUTIVE ACCESS SWITCH)
+-------------------------------
+Switch>enable
+Switch#configure terminal
+Switch(config)#hostname EX_ASW
+
+EX_ASW(config)#vlan 10
+EX_ASW(config-vlan)# name Executive
+EX_ASW(config-vlan)#vlan 20
+EX_ASW(config-vlan)# name Design
+EX_ASW(config-vlan)#vlan 30
+EX_ASW(config-vlan)# name Operations
+EX_ASW(config-vlan)#vlan 40
+EX_ASW(config-vlan)# name Engineering
+EX_ASW(config-vlan)#vlan 50
+EX_ASW(config-vlan)# name HR&COM
+
+EX_ASW(config)#interface FastEthernet0/1
+EX_ASW(config-if)#switchport mode trunk
+EX_ASW(config-if)#exit
+EX_ASW(config)#interface FastEthernet0/2
+EX_ASW(config-if)#switchport access vlan 10
+EX_ASW(config-if)#exit
+
+DES_ASW(DESIGN ACCESS SWITCH)
+-----------------------------
+Switch>enable
+Switch#configure terminal
+Switch(config)#hostname DES_ASW
+
+DES_ASW(config)#vlan 10
+DES_ASW(config-vlan)# name Executive
+DES_ASW(config-vlan)#vlan 20
+DES_ASW(config-vlan)# name Design
+DES_ASW(config-vlan)#vlan 30
+DES_ASW(config-vlan)# name Operations
+DES_ASW(config-vlan)#vlan 40
+DES_ASW(config-vlan)# name Engineering
+DES_ASW(config-vlan)#vlan 50
+DES_ASW(config-vlan)# name HR&COM
+
+DES_ASW(config)#interface FastEthernet0/1
+DES_ASW(config-if)#switchport mode trunk
+DES_ASW(config-if)#exit
+DES_ASW(config)#interface FastEthernet0/2
+DES_ASW(config-if)#switchport access vlan 10
+DES_ASW(config-if)#exit
+
+OPS_ASW(OPERATIONS ACCESS SWITCH)
+--------------------------------
+Switch>enable
+Switch#configure terminal
+Switch(config)#hostname OPS_ASW
+
+OPS_ASW(config)#vlan 10
+OPS_ASW(config-vlan)# name Executive
+OPS_ASW(config-vlan)#vlan 20
+OPS_ASW(config-vlan)# name Design
+OPS_ASW(config-vlan)#vlan 30
+OPS_ASW(config-vlan)# name Operations
+OPS_ASW(config-vlan)#vlan 40
+OPS_ASW(config-vlan)# name Engineering
+OPS_ASW(config-vlan)#vlan 50
+OPS_ASW(config-vlan)# name HR&COM
+
+OPS_ASW(config)#interface FastEthernet0/1
+OPS_ASW(config-if)#switchport mode trunk
+OPS_ASW(config-if)#exit
+OPS_ASW(config)#interface FastEthernet0/2
+OPS_ASW(config-if)#switchport access vlan 10
+OPS_ASW(config-if)#exit
+
+ENG_ASW(ENGINEERING ACCESS SWITCH)
+--------------------------------
+Switch>enable
+Switch#configure terminal
+Switch(config)#hostname ENG_ASW
+
+ENG_ASW(config)#vlan 10
+ENG_ASW(config-vlan)# name Executive
+ENG_ASW(config-vlan)#vlan 20
+ENG_ASW(config-vlan)# name Design
+ENG_ASW(config-vlan)#vlan 30
+ENG_ASW(config-vlan)# name Operations
+ENG_ASW(config-vlan)#vlan 40
+ENG_ASW(config-vlan)# name Engineering
+ENG_ASW(config-vlan)#vlan 50
+ENG_ASW(config-vlan)# name HR&COM
+
+ENG_ASW(config)#interface FastEthernet0/1
+ENG_ASW(config-if)#switchport mode trunk
+ENG_ASW(config-if)#exit
+ENG_ASW(config)#interface FastEthernet0/2
+ENG_ASW(config-if)#switchport access vlan 10
+ENG_ASW(config-if)#exit
+
+HR&COM_ASW(HR and COMMUNICATIONS ACCESS SWITCH)
+-----------------------------------------------
+Switch>enable
+Switch#configure terminal
+Switch(config)#hostname HR&COM_ASW
+
+HR&COM_ASW(config)#vlan 10
+HR&COM_ASW(config-vlan)# name Executive
+HR&COM_ASW(config-vlan)#vlan 20
+HR&COM_ASW(config-vlan)# name Design
+HR&COM_ASW(config-vlan)#vlan 30
+HR&COM_ASW(config-vlan)# name Operations
+HR&COM_ASW(config-vlan)#vlan 40
+HR&COM_ASW(config-vlan)# name Engineering
+HR&COM_ASW(config-vlan)#vlan 50
+HR&COM_ASW(config-vlan)# name HR&COM
+
+HR&COM_ASW(config)#interface FastEthernet0/1
+HR&COM_ASW(config-if)#switchport mode trunk
+HR&COM_ASW(config-if)#exit
+HR&COM_ASW(config)#interface FastEthernet0/2
+HR&COM_ASW(config-if)#switchport access vlan 10
+HR&COM_ASW(config-if)#exit
